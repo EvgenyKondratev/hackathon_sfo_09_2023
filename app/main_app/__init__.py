@@ -3,6 +3,7 @@ import uuid
 import time
 import json
 import cv2
+import zipfile
 from fastapi import FastAPI, status, Request, File, BackgroundTasks, UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -26,6 +27,17 @@ class Status(BaseModel):
     filename: str | None = None
 
 
+class ColumnImg(BaseModel):
+    blurred: list[str]
+    nobody: list[str]
+    animals: list[str]
+
+
+class PredictData(BaseModel):
+    filename: str
+    images: ColumnImg
+
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/test", StaticFiles(directory="test"), name="test")
@@ -43,26 +55,30 @@ async def index(request: Request):
 
 @app.post("/upload")
 async def upload(file: bytes = File(...)) -> Upload:
-    filename = uuid.uuid4().hex + '.mp4'
     path = './test'
+    name = uuid.uuid4().hex
+
+    filename = name + '.zip'
     with open(f'{path}/{filename}', 'wb') as f:
         f.write(file)
-    return Upload(path=path, filename=filename)
+
+    with zipfile.ZipFile(f'{path}/{filename}') as zip_ref:
+        zip_ref.extractall(f'{path}/{name}')
+
+    os.remove(f'{path}/{filename}')
+
+    return Upload(path=path, filename=name)
 
 
 def predict_file(filename: str, out_path: str, fr=600, step=30):
     path = './test'
     name = f'{path}/{filename}'
-    #out_path = f'{path}/res'
+    # out_path = f'{path}/res'
 
 
 @app.post("/predict")
-async def predict(filename: str) -> Status:
+async def predict(filename: str) -> PredictData:
     path = './test'
     name = f'{path}/{filename}'
-    suffix = 'out'
-    fn, ext = os.path.splitext(filename)
 
-    out_name = f'{path}/res/{fn}_{suffix}{ext}'
-
-    return Status(**{'percent': 100, 'path': path, 'filename': out_name})
+    return PredictData(filename='', images=ColumnImg(blurred=[], nobody=[], animals=[]))

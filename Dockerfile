@@ -12,6 +12,9 @@ RUN pip install -r /tmp/requirements_nn.txt
 
 RUN pip3 install torch torchvision torchaudio -f https://download.pytorch.org/whl/cu111/torch_stable.html
 
+COPY requirements_ultralytics.txt /tmp/requirements_ultralytics.txt
+RUN pip install -r /tmp/requirements_ultralytics.txt
+
 #COPY requirements_gan.txt /tmp/requirements_gan.txt
 #RUN pip install -r /tmp/requirements_gan.txt
 
