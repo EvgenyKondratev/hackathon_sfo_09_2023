@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block scripts %}
+
+<!-- скрипты -->
+
+{% endblock %}
+{% block content %}
+
+
+<body>
+        <div class="body">
+                <!-- -------------- header ------------------ -->
+
+                <div class="header">
+                        <div class="header__logo">
+                                
+                                <img src="./static/img/logo.jpg" alt=""  width="250">
+                                </div>
+                        <div class="header__nav nav">
+                                <div class="header__nav-link"><a href="/">Кейс</a></div>
+                                <div class="header__nav-link "><a href="/">О нас</a></div>
+                        </div>
+                        <div class="header__social">
+                                <div class="header__social_link"><a href="https://github.com/EvgenyKondratev/hackathon_dvfo_09_2023.git"><i class="fa-brands fa-github"></i></a>
+                                 </div>
+                        </div>
+                </div>
+
+                <!-- -------------- main ------------------ -->
+                <div class="main">
+                        <div class="left">
+                                <div class="case">
+                                        <h2>Кейс:</h2>
+                                        <br>
+                                        <p></p>
+                                        <br>
+                                        <br>
+                                </div>
+        
+                        <!-- ----------- file ----------- -->
+                                <div class="form">
+                                        <form id="upload-file" class="">
+                                                <h3>Выберите zip-архив</h3>
+                                                <!-- <input class="form-control form-control-lg mt-3" name="fileToUpload" id="fileToUpload" type="file" > -->
+                                                <input class="hidden" name="fileToUpload" id="fileToUpload" type="file" >
+                                                <button type="submit" id = "file-choose-button" class=" btn btn-light form-control-sm mt-3">Выбрать файл</button>
+                                                <span id="fileName">Файл не выбран</span><br>
+                                                <button type="submit" id = "file-send-button"class="btn btn-success btn-lg mt-3">Отправить</button>
+
+                                        </form>
+                                </div>
+                
+                
+                        </div>
+
+                        <div class="right">   
+                        </div>
+
+                            <!-- -------------- output ----------- -->
+                <div id="output" class="invisible">
+                        <div class="output-left">
+
+                        </div>
+                        <div class="output-right">
+                                Здесь будет улучшенное видео
+                        </div>
+                          
+                </div>
+                        
+                       
+                </div>
+              
+
+
+        </div>
+        
+     
+        <div class="popup" id="popup">
+                <img src="./static/img/loading1.png" alt="Loading animation" width = "200">
+              </div>
+
+        <script src='static/form-v1.js'></script>
+
+</body>
+
+{% endblock %}

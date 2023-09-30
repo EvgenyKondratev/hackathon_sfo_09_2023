@@ -2,6 +2,9 @@
     margin: 0;
     padding: 0;
 }
+.flex{
+    display: flex;
+}
 .body {
     width: 100%;
     min-height: 100vh;
@@ -30,25 +33,38 @@ P{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image:  url("./img/right.svg");
+    background-image:  url("./img/animals-wide-dark-25-opacity.png");
     background-color: black;
-    background-position: top right;
-    background-size: contain;
+    background-position: center top;
+    background-size: cover;
     background-repeat: no-repeat;
-    background-size: 40%;
+    background-size: 100%;
     position: relative;
+    z-index: 0;
 }
+
 .main::before {
     content: "";
-    background-color: rgba(0, 0, 0, 0.5); /* Здесь можно установить цвет overlay и его прозрачность */
-    background: linear-gradient(to right, rgb(9, 0, 41), rgba(0, 0, 0, 0)); /* Градиент от черного к прозрачному */
+  
 
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Установите z-index по вашему усмотрению, чтобы контент оставался выше overlay */
+    z-index: 1; /* Установите z-index по вашему усмотрению, чтобы контент оставался выше overlay */
+  }
+  .main::before {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.0); 
+    /* background: linear-gradient(to right, rgb(9, 0, 41), rgba(0, 0, 0, 0));  */
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
   }
 .left{
     width: 75%;

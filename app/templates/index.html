@@ -10,78 +10,82 @@
 
 
 <body>
-        <div class="body">
-                <!-- -------------- header ------------------ -->
 
-                <div class="header">
-                        <div class="header__logo">
-                                
-                                <img src="./static/img/logo.jpg" alt=""  width="250">
-                                </div>
-                        <div class="header__nav nav">
-                                <div class="header__nav-link"><a href="/">Кейс</a></div>
-                                <div class="header__nav-link "><a href="/">О нас</a></div>
-                        </div>
-                        <div class="header__social">
-                                <div class="header__social_link"><a href="https://github.com/EvgenyKondratev/hackathon_dvfo_09_2023.git"><i class="fa-brands fa-github"></i></a>
-                                 </div>
-                        </div>
-                </div>
+    <div class="body">
 
-                <!-- -------------- main ------------------ -->
-                <div class="main">
-                        <div class="left">
-                                <div class="case">
-                                        <h2>Кейс:</h2>
-                                        <br>
-                                        <p></p>
-                                        <br>
-                                        <br>
-                                </div>
-        
-                        <!-- ----------- file ----------- -->
-                                <div class="form">
-                                        <form id="upload-file" class="">
-                                                <h3>Выберите zip-архив</h3>
-                                                <!-- <input class="form-control form-control-lg mt-3" name="fileToUpload" id="fileToUpload" type="file" > -->
-                                                <input class="hidden" name="fileToUpload" id="fileToUpload" type="file" >
-                                                <button type="submit" id = "file-choose-button" class=" btn btn-light form-control-sm mt-3">Выбрать файл</button>
-                                                <span id="fileName">Файл не выбран</span><br>
-                                                <button type="submit" id = "file-send-button"class="btn btn-success btn-lg mt-3">Отправить</button>
-
-                                        </form>
-                                </div>
-                
-                
-                        </div>
-
-                        <div class="right">   
-                        </div>
-
-                            <!-- -------------- output ----------- -->
-                <div id="output" class="invisible">
-                        <div class="output-left">
-
-                        </div>
-                        <div class="output-right">
-                                Здесь будет улучшенное видео
-                        </div>
-                          
-                </div>
-                        
-                       
-                </div>
-              
-
-
+        <!-- ------- header ------- -->
+        <div class="header">
+            <div class="header__logo">
+                <img src="./static/img/logo.jpg" alt=""  width="250">
+            </div>
+            <div class="header__social">
+                <div class="header__social_link"><a href="https://github.com/EvgenyKondratev/hackathon_sfo_09_2023"><i class="fa-brands fa-github"></i></a></div>
+            </div>
         </div>
-        
-     
-        <div class="popup" id="popup">
-                <img src="./static/img/loading1.png" alt="Loading animation" width = "200">
-              </div>
+       <!-- ----------- main ----------- -->
+        <div class="main">
+           <div class="case">
+                <h2>Кейс:</h2>
+                <br>
+                <p>Разработка программного модуля с использованием технологий искусственного интеллекта, позволяющего классифицировать фотографии с фотоловушек на качественные и некачественные. В результате создания такого решения существенно сократится количество времени, затрачиваемое на анализ полученных снимков. Проблема заключается в невозможности контролировать качество каждого снимка фотоловушки вручную, т.к. количество снимков с каждой из них насчитывает несколько тысяч в год.
+                </p>
+           </div>
 
-        <script src='static/form-v1.js'></script>
+           <div class="form">
+                <form id="form">
+                    <h3>Загрузите архив</h3>
+                    <!-- <input class="form-control form-control-lg mt-3" name="fileToUpload" id="fileToUpload" type="file" > -->
+                    <input class="hidden" name="fileToUpload" id="fileToUpload" type="file" >
+                    <span><button type="submit" id = "file-choose-button" class=" btn btn-light btn-lg form-control-sm mt-3">Выбрать файл</button></span>
+                    
+                    <span><button type="submit" id = "file-send-button"class="btn btn-success btn-lg mt-3 ml-5">Отправить</button></span>
+                    <br>
+                    <span id="fileName" class="ml-5 mt-5">Файл не выбран</span>
+                </form>
+            </div>
+            <div class="output" id="output">
+                <div>
+                    <p class="pathname"></p>
+                    <button type="submit" id = "analyze"class="btn btn-success btn-lg mt-3 ml-5">Анализировать</button>
+                </div>
+            </div>
+            <div class="output2 hidden" id="output2">
+                <h2>Output</h2>
+                <p id="output3"></p>
+                <table class="table">
+                    <tr>
+                        
+                            <td>Animals</td>
+                            <td>Blurred</td>
+                            <td>Nobody</td>
+                    
+                    
+                    </tr>
+                     
+                    
+                    <tr>
+                        <td>Animal 1</td>
+                        <td>Blurred 1</td>
+                        <td>Nobody 1</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>  
+        
+    </div>
+
+ 
+
+
+
+
+    <!-- ------------ popup ----------- -->
+    <div class="popup" id="popup">
+        <img src="./static/img/loading1.png" alt="Loading animation" width = "200">
+      </div>
+
+    <script src='static/script.js'></script>
 
 </body>
 
