@@ -18,10 +18,10 @@ class Net:
         self.frame_height = frame_height
         self.frame_width = frame_width
 
-        # self.weights = 'neural_nets/weights/yolov8s_50ep_bs16.pt'
+        self.weights = 'neural_nets/weights/yolov8x-seg.pt'
         self.weights_cl = 'neural_nets/weights/best.pt'  # yolov8n-cls.pt'
 
-        self.model = YOLO('yolov8x-seg.pt')  # "yolov8n-cls.pt")  # self.weights)
+        self.model = YOLO('yolov8x-seg.pt')  # self.weights
         self.model_cls = YOLO(self.weights_cl)
 
         self.transform = alb.Compose([alb.Resize(self.frame_height, self.frame_width, cv2.INTER_LANCZOS4)])

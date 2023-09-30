@@ -139,3 +139,5 @@ datasets/
 
 # test
 test/
+
+app/yolov8x-seg.pt
