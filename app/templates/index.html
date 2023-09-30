@@ -43,31 +43,30 @@
                     <span id="fileName" class="ml-5 mt-5">Файл не выбран</span>
                 </form>
             </div>
-            <div class="output" id="output">
+            <!-- <div class="img">
+                <img src="/test/183868593e414a6eabe5dd4725889cea/SYER0023.JPG" alt="">
+            </div> -->
+            <div class="output hidden" id="output">
                 <div>
                     <p class="pathname"></p>
                     <button type="submit" id = "analyze"class="btn btn-success btn-lg mt-3 ml-5">Анализировать</button>
                 </div>
             </div>
             <div class="output2 hidden" id="output2">
-                <h2>Output</h2>
+                <h2>Результат</h2>
                 <p id="output3"></p>
-                <table class="table">
+                <table class="table" id="table">
                     <tr>
-                        
-                            <td>Animals</td>
-                            <td>Blurred</td>
-                            <td>Nobody</td>
-                    
-                    
-                    </tr>
-                     
-                    
+                        <td>Некачественные фото</td>
+                        <td>Нет животных</td>
+                        <td>Найдены животные</td>
+                        </tr>
                     <tr>
-                        <td>Animal 1</td>
-                        <td>Blurred 1</td>
-                        <td>Nobody 1</td>
+                        <td id="col1"></td>
+                        <td id="col2"></td>
+                        <td id="col3"></td>
                     </tr>
+                   
                 </table>
             </div>
 

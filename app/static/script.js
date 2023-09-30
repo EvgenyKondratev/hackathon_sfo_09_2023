@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileName = document.getElementById('fileName');
     const pathName = document.querySelector('.pathname');
     const analyzeButton = document.getElementById('analyze');
+    const table = document.getElementById('table');
+    const col1 = document.getElementById('col1');
+    const col2 = document.getElementById('col2');
+    const col3 = document.getElementById('col3');
+
     console.log(analyzeButton);
     
     let receivedFileName = '';
@@ -78,23 +83,29 @@ document.addEventListener('DOMContentLoaded', function() {
             });
            
         if (response.ok) {
-            console.log('response 2 получен');
-            const data = await response.json();
-                // form.reset(); // Сбрасываем форму
-            // console.log('данные из ответа 2 : ' + data);
-            // console.log('данные из ответа 2 : ' + data.filename);
-            // console.log('данные из ответа 2 : ' + data.images.animals);
-            // let obj = JSON.stringify(data);
-            // console.log('obj: ' + obj);
+                console.log('response 2 получен');
+                const data = await response.json();
                 output2.classList.remove('hidden');
-                // output3.textContent = JSON.stringify(data);
+                output.classList.add('hidden');
                 console.log(data.images);
-                output3.textContent = data;
-         
-                // pathName.textContent = 'Архив успешно загружен на сервер. Имя файла:  ' + data.filename + '. Path: ' + data.path + '  Хотите проанализировать фотографии?';
-                // receivedFileName = data.filename;
-                // hidePopup();
-            
+                // output3.textContent = data;
+                let testArr = ['string-1', 'string-2', 'string-3'];
+                let html = '';
+                let col1Html = '';
+                
+                // let html = `<tr>
+                //             <td>Animals</td>
+                //             <td>Blurred</td>
+                //             <td>Nobody</td>
+                //             </tr>`;
+                testArr.forEach((el) => {
+                    html += `
+                    <div class = "cards"><img src="/test/183868593e414a6eabe5dd4725889cea/SYER0023.JPG" alt=""></div>
+              `; 
+                });
+                console.log(html);
+                col2.innerHTML = html;
+      
             } else {
                 output.classList.remove('hidden');
                 output.textContent = 'Ошибка при загрузке файла.';
