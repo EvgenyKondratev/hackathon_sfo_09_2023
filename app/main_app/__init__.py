@@ -32,9 +32,9 @@ class Status(BaseModel):
 
 
 class ColumnImg(BaseModel):
-    blurred: list[str]
-    nobody: list[str]
-    animals: list[str]
+    broken: list[str]
+    empty: list[str]
+    animal: list[str]
 
 
 class PredictData(BaseModel):
@@ -67,7 +67,7 @@ async def upload(file: bytes = File(...)) -> Upload:
     with open(f'{path}/{filename}', 'wb') as f:
         f.write(file)
 
-    with zipfile.ZipFile(f'{path}/{filename}') as zip_ref:
+    with zipfile.ZipFile(f'{path}/{filename}') as zip_ref:  # , metadata_encoding='utf-8'
         zip_ref.extractall(f'{path}/{name}')
 
     os.remove(f'{path}/{filename}')
@@ -82,20 +82,71 @@ def predict_file(filename: str, out_path: str, fr=600, step=30):
 
 
 def predict_images_in_dir(path: str, path_res: str):
+    path_test = './test'
+    cur_path = '/'.join(path.replace('\\', '/').replace(path_test + '/', '').split('/')[1:])
+    logger.info(cur_path)
     files = os.listdir(path)  # [f for f in os.listdir(path) if splitext(join(path, f))
     for f in files:
         if isfile(join(path, f)) and splitext(join(path, f))[-1].lower() in EXTS:
             try:
                 img = cv2.imread(join(path, f))
                 cl, img_pred = net.predict(img)
+
+                write_path = None
                 if cl == 0:
-                    pass
+                    write_path = join(path_res, 'broken', cur_path)
                 elif cl == 1:
-                    pass
+                    write_path = join(path_res, 'empty', cur_path)
                 else:
-                    pass
+                    write_path = join(path_res, 'animal', cur_path)
+
+                if write_path is not None:
+                    if not exists(write_path):
+                        os.makedirs(write_path)
+                    cv2.imwrite(join(write_path, f), img_pred)
             except Exception as exc:
                 logger.error(str(exc))
+        elif isdir(join(path, f)):
+            predict_images_in_dir(join(path, f), path_res)
+
+
+def get_images_list(path) -> list[str]:
+    res = []
+    files = os.listdir(path)
+    for f in files:
+        if isfile(join(path, f)):
+            res.append(join(path, f))
+        if isdir(join(path, f)):
+            res += get_images_list(join(path, f))
+    return res
+
+
+def create_predict_result(path_res: str) -> ColumnImg:
+    broken = []
+    empty = []
+    animal = []
+    if exists(join(path_res, 'broken')):
+        broken = get_images_list(join(path_res, 'broken'))
+    if exists(join(path_res, 'empty')):
+        empty = get_images_list(join(path_res, 'empty'))
+    if exists(join(path_res, 'animal')):
+        animal = get_images_list(join(path_res, 'animal'))
+
+    return ColumnImg(broken=broken, empty=empty, animal=animal)
+
+
+def create_csv(filename: str, column_img: ColumnImg) -> None:
+    with open(filename, 'wt') as f:
+        f.write('filename;broken;empty;animal\n')
+
+        for item in column_img.broken:
+            f.write(f'{item};1;0;0\n')
+
+        for item in column_img.empty:
+            f.write(f'{item};0;1;0\n')
+
+        for item in column_img.animal:
+            f.write(f'{item};0;0;1\n')
 
 
 @app.post("/predict")
@@ -107,40 +158,9 @@ async def predict(filename: str) -> PredictData:
     if exists(name):
         if not exists(name_res):
             os.makedirs(name_res)
-        # predict_images_in_dir(name, name_res)
+        predict_images_in_dir(name, name_res)
+        column_img = create_predict_result(name_res)
+        create_csv(name + '.csv', column_img)
+        return PredictData(filename=name + '.csv', images=column_img)
 
-    blurred = [
-        'broken_31.JPG',
-        'broken_43.JPG',
-        'broken_50.JPG'
-    ]
-
-    nobody = [
-        'blurred_303.jpg',
-        'clear_103__лабаз.jpg',
-        'clear_173__PICT0711_кабанчик_в_бабочках.jpg',
-        'clear_216__PICT0220_бабочки_боярышница.jpg',
-        'clear_243__PICT0002хатка_зимой.jpg',
-        'clear_346__PICT0433.JPG'
-        ]
-
-    animals = ['photo1696081846 (1).jpeg',
-               'photo1696081846 (2).jpeg',
-               'photo1696081846 (3).jpeg',
-               'photo1696081846 (4).jpeg',
-               'photo1696081846 (5).jpeg',
-               'photo1696081846 (6).jpeg',
-               'photo1696081846 (7).jpeg',
-               'photo1696081846 (8).jpeg',
-               'photo1696081846.jpeg'
-               ]
-
-    blurred = [join(path, 'blurred', x) for x in blurred]
-    animals = [join(path, 'animals', x) for x in animals]
-    nobody = [join(path, 'nobody', x) for x in nobody]
-
-    return PredictData(filename='', images=ColumnImg(
-        blurred=blurred,
-        nobody=nobody,
-        animals=animals
-    ))
+    return PredictData(filename='', images=ColumnImg(broken=[], empty=[], animal=[]))

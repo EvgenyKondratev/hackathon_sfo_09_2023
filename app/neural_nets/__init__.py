@@ -32,8 +32,11 @@ class Net:
         results = self.model(img, verbose=False, conf=0.5)
         class_list = results[0].boxes.cls.to('cpu').tolist()
 
-        if len(CONTROL_SET.intersection(set(class_list))) != 0 and len(PERSON_SET.intersection(set(class_list))) == 0:
-            return 1, results[0].plot(labels=False)
+        if len(PERSON_SET.intersection(set(class_list))) != 0:
+            return 1, img
+
+        if len(CONTROL_SET.intersection(set(class_list))) != 0:
+            return 2, results[0].plot(labels=False)
 
         pred = self.model_cls(img, verbose=False, conf=0.5)
         # logger.info(pred[0].probs.top1)
