@@ -78,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('click analyze');
     
         try {
-            const response = await fetch("/predict?filename=${receivedFileName}", {
-               
+            // const response = await fetch("/predict?filename=${receivedFileName}", {
+                const response = await fetch("/predict?filename=1b1ca62a2fe346c3b85a8a7b27102e4e", {
 
                 method: 'POST',
             });
