@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         console.log('click analyze');
         console.log(receivedFileName);
+        showPopup();
     
         try {
             const response = await fetch(`/predict?filename=${receivedFileName}`, {
@@ -88,14 +89,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 //     "Content-type": "application/json"
                 // },   
             });
-           
+            
         if (response.ok) {
                 console.log('response 2 получен');
                 const data = await response.json();
                 output2.classList.remove('hidden');
                 output.classList.add('hidden');
                 console.log(data);
-            
+                
                 let col1Html = '';
                 data.images.broken.forEach((el) => {
                     col1Html += `
@@ -120,7 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 console.log(col3Html);
                 col3.innerHTML = col3Html;
-
+                hidePopup();
+        
 
                 // let html = `<tr>
                 //             <td>Animals</td>
@@ -145,6 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Произошла ошибка:', error);
             output.classList.remove('hidden');
             output.textContent = 'Произошла ошибка при выполнении запроса.';
+            hidePopup();
         }
         
     });
