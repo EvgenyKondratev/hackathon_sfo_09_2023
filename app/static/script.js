@@ -57,8 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     form.reset(); // Сбрасываем форму
                     console.log(data);
                     output.classList.remove('hidden');
-                    pathName.textContent = 'Архив успешно загружен на сервер. Имя файла:  ' + data.filename + '. Path: ' + data.path + '  Хотите проанализировать фотографии?';
+                    pathName.textContent = 'Архив успешно загружен на сервер. Хотите проанализировать фотографии?';
                     receivedFileName = data.filename;
+                    console.log(receivedFileName);
                     hidePopup();
         
                 } else {
@@ -76,12 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
     analyzeButton.addEventListener('click', async function(event) {
         event.preventDefault();
         console.log('click analyze');
+        console.log(receivedFileName);
     
         try {
-            // const response = await fetch("/predict?filename=${receivedFileName}", {
-                const response = await fetch("/predict?filename=1b1ca62a2fe346c3b85a8a7b27102e4e", {
+            const response = await fetch(`/predict?filename=${receivedFileName}`, {
+                // const response = await fetch("/predict?filename=3b67c7a2f2434541ba6e325470ef469e", {
 
                 method: 'POST',
+                // headers: {
+                //     "Content-type": "application/json"
+                // },   
             });
            
         if (response.ok) {
