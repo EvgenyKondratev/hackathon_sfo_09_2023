@@ -78,7 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('click analyze');
     
         try {
-            const response = await fetch("/predict?filename=${receivedFileName}", {
+            // const response = await fetch("/predict?filename=${receivedFileName}", {
+                const response = await fetch("/predict?filename=1b1ca62a2fe346c3b85a8a7b27102e4e", {
+
                 method: 'POST',
             });
            
@@ -87,24 +89,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await response.json();
                 output2.classList.remove('hidden');
                 output.classList.add('hidden');
-                console.log(data.images);
-                // output3.textContent = data;
-                let testArr = ['string-1', 'string-2', 'string-3'];
-                let html = '';
+                console.log(data);
+            
                 let col1Html = '';
-                
+                data.images.broken.forEach((el) => {
+                    col1Html += `
+                    <div class = "cards"><img src="${el}" alt=""></div>`;
+                });
+                console.log(col1Html);
+                col1.innerHTML = col1Html;
+
+                let col2Html = '';
+                data.images.empty.forEach((el) => {
+                    col2Html += `
+                    <div class = "cards"><img src="${el}" alt=""></div>`;
+                });
+                console.log(col2Html);
+                col2.innerHTML = col2Html;
+
+                let col3Html = '';
+                data.images.animal.forEach((el) => {
+                    col3Html += `
+                    <div class = "cards"><img src="${el}" alt=""></div>
+              `;
+                });
+                console.log(col3Html);
+                col3.innerHTML = col3Html;
+
+
                 // let html = `<tr>
                 //             <td>Animals</td>
                 //             <td>Blurred</td>
                 //             <td>Nobody</td>
                 //             </tr>`;
-                testArr.forEach((el) => {
-                    html += `
-                    <div class = "cards"><img src="/test/183868593e414a6eabe5dd4725889cea/SYER0023.JPG" alt=""></div>
-              `; 
-                });
-                console.log(html);
-                col2.innerHTML = html;
+            //     testArr.forEach((el) => {
+            //         html += `
+            //         <div class = "cards"><img src="/test/183868593e414a6eabe5dd4725889cea/SYER0023.JPG" alt=""></div>
+            //   `; 
+            //     });
+                // console.log(html);
+                // col2.innerHTML = html;
       
             } else {
                 output.classList.remove('hidden');
