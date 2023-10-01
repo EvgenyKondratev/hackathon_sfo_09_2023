@@ -3,6 +3,7 @@ from os.path import exists, isfile, isdir, join, splitext
 import uuid
 import time
 import json
+import shutil
 import cv2
 import zipfile
 from fastapi import FastAPI, status, Request, File, BackgroundTasks, UploadFile
@@ -58,6 +59,22 @@ async def index(request: Request):
     return templates.TemplateResponse("index.html", template_data)
 
 
+def unpack_zipfile(filename, extract_dir, encoding='cp437'):
+    with zipfile.ZipFile(filename) as archive:
+        for entry in archive.infolist():
+            name = entry.filename.encode('cp437').decode(encoding)  # reencode!!!
+
+            # don't extract absolute paths or ones with .. in them
+            if name.startswith('/') or '..' in name:
+                continue
+
+            target = os.path.join(extract_dir, *name.split('/'))
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            if not entry.is_dir():  # file
+                with archive.open(entry) as source, open(target, 'wb') as dest:
+                    shutil.copyfileobj(source, dest)
+
+
 @app.post("/upload")
 async def upload(file: bytes = File(...)) -> Upload:
     path = './test'
@@ -67,8 +84,10 @@ async def upload(file: bytes = File(...)) -> Upload:
     with open(f'{path}/{filename}', 'wb') as f:
         f.write(file)
 
-    with zipfile.ZipFile(f'{path}/{filename}') as zip_ref:  # , metadata_encoding='utf-8'
-        zip_ref.extractall(f'{path}/{name}')
+    unpack_zipfile(f'{path}/{filename}', f'{path}/{name}', encoding='cp866')
+
+    # with zipfile.ZipFile(f'{path}/{filename}') as zip_ref:  # , metadata_encoding='utf-8'
+    #     zip_ref.extractall(f'{path}/{name}')
 
     os.remove(f'{path}/{filename}')
 
